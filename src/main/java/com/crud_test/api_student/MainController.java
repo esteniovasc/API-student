@@ -15,9 +15,7 @@ public class MainController {
     private StudentRepository studentRepository;
 
     @PostMapping(path="/add") // Map ONLY POST Requests
-
-    public @ResponseBody String addNewUser (@RequestParam String name
-            , @RequestParam String turma) {
+    public @ResponseBody String addNewUser (@RequestParam String name, @RequestParam String turma) {
         // @ResponseBody means the returned String is the response, not a view name
         // @RequestParam means it is a parameter from the GET or POST request
 
@@ -28,11 +26,23 @@ public class MainController {
         return "200 OK Saved";
     }
 
+    @PutMapping(path="/update/{id}")
+    public @ResponseBody String replaceUser (@PathVariable int id, @PathVariable Student student){
+
+
+        return "200 OK Replaced";
+    }
+
     @GetMapping(path="/all")
     public @ResponseBody Iterable<Student> getAllUsers() {
         // This returns a JSON or XML with the users
         return studentRepository.findAll();
     }
 
+    @DeleteMapping(path = "/delete/{id}")
+    public @ResponseBody String deleteUser (@PathVariable int id){
+        studentRepository.deleteById(id);
+        return "200 OK Deleted";
+    }
 
 }
