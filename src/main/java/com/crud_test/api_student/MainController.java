@@ -11,6 +11,8 @@ import java.util.Optional;
 @Controller // This means that this class is a Controller
 @RequestMapping(path="/students") // This means URL's start with /students (after Application path)
 
+@CrossOrigin(origins = "http://localhost:4200") // permite o servico do angular comunicar-se com a API
+
 public class MainController {
 
     @Autowired // This means to get the bean called userRepository
@@ -60,7 +62,7 @@ public class MainController {
     }
 
     @DeleteMapping(path = "/delete/{id}")
-    public ResponseEntity<Void> deleteStudent (@PathVariable int id){
+    public ResponseEntity<String> deleteStudent (@PathVariable int id){
 
         Optional<Student> studentOptional = studentRepository.findById(id);
 
