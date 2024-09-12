@@ -45,9 +45,18 @@ public class MainController {
     }
 
     @PutMapping(path="/update/{id}")
-    public @ResponseBody String replaceUser (@PathVariable int id, @PathVariable Student student){
+    public @ResponseBody Student replaceStudent (Student newStudent, @PathVariable int id){
 
-        return "200 OK Replaced";
+        return studentRepository.findById(id)
+                .map(student -> {
+                    student.setName(newStudent.getName());
+                    student.setTurma(newStudent.getTurma());
+                    return studentRepository.save(student);
+                })
+                .orElseGet(() -> {
+                    return studentRepository.save(newStudent);
+                });
+
     }
 
     @DeleteMapping(path = "/delete/{id}")
