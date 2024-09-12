@@ -1,8 +1,12 @@
 package com.crud_test.api_student;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @Controller // This means that this class is a Controller
 @RequestMapping(path="/students") // This means URL's start with /students (after Application path)
@@ -14,8 +18,19 @@ public class MainController {
 
     private StudentRepository studentRepository;
 
+    @GetMapping(path="/all")
+    public @ResponseBody Iterable<Student> getAllUsers() {
+        // This returns a JSON or XML with the users
+        return studentRepository.findAll();
+    }
+
+    @GetMapping(path="/all/{id}")
+    public @ResponseBody Optional<Student> getStudentById(@PathVariable int id) {
+        return studentRepository.findById(id);
+    }
+
     @PostMapping(path="/add") // Map ONLY POST Requests
-    public @ResponseBody String addNewUser (@RequestParam String name, @RequestParam String turma) {
+    public  ResponseEntity<String>  addStudent (@RequestParam String name, @RequestParam String turma) {
         // @ResponseBody means the returned String is the response, not a view name
         // @RequestParam means it is a parameter from the GET or POST request
 
@@ -23,26 +38,34 @@ public class MainController {
         n.setName(name);
         n.setTurma(turma);
         studentRepository.save(n);
-        return "200 OK Saved";
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .build();
     }
 
     @PutMapping(path="/update/{id}")
     public @ResponseBody String replaceUser (@PathVariable int id, @PathVariable Student student){
 
-
         return "200 OK Replaced";
     }
 
-    @GetMapping(path="/all")
-    public @ResponseBody Iterable<Student> getAllUsers() {
-        // This returns a JSON or XML with the users
-        return studentRepository.findAll();
-    }
-
     @DeleteMapping(path = "/delete/{id}")
-    public @ResponseBody String deleteUser (@PathVariable int id){
-        studentRepository.deleteById(id);
-        return "200 OK Deleted";
+    public ResponseEntity<Void> deleteStudent (@PathVariable int id){
+
+        Optional<Student> studentOptional = studentRepository.findById(id);
+
+        if(!studentOptional.isPresent()){
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .build();
+        }
+
+        studentRepository.delete(studentOptional.get());
+
+        return ResponseEntity
+                .status(HttpStatus.ACCEPTED)
+                .build();
     }
 
 }
