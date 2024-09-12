@@ -32,5 +32,5 @@ Depois que preparar a tabela no MySQL do Docker, pode realizar as operações no
 
 ### Screenshots
 
-[Teste pelo Postman](https://i.ibb.co/zsTzdRh/Captura-de-tela-2024-09-12-182136.png)
-[Consumindo a API pelo Gestão Escolar](https://i.ibb.co/Kh5p853/Captura-de-tela-2024-09-12-182104.png)
+![Teste pelo Postman](https://i.ibb.co/zsTzdRh/Captura-de-tela-2024-09-12-182136.png)
+![Consumindo a API pelo Gestão Escolar](https://i.ibb.co/Kh5p853/Captura-de-tela-2024-09-12-182104.png)
